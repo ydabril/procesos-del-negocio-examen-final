@@ -35,9 +35,6 @@ public class User implements UserDetails {
     @NotBlank(message = "Please provide the password")
     @Size(min = 8, max = 15)
     private String password;
-    @OneToMany(mappedBy = "user")
-    private List<Address> address;
-    @Enumerated(EnumType.STRING)
     private Role role;
 
     @Override

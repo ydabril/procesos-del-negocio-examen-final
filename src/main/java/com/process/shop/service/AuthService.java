@@ -22,14 +22,12 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public AuthResponse login(AuthRequest authRequest){
-        try{
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                    authRequest.getEmail(), authRequest.getPassword()
-            ));
-        } catch (Exception e){
+
+        Optional<User> user = userRepository.findByEmail(authRequest.getEmail());
+        if(user.isEmpty()){
             throw new AuthenticationFailedException(ErrorMessages.CREDENTIAL_INVALID.getMessage());
         }
-        Optional<User> user = userRepository.findByEmail(authRequest.getEmail());
+        user = userRepository.findByPassword(authRequest.getPassword());
         if(user.isEmpty()){
             throw new AuthenticationFailedException(ErrorMessages.CREDENTIAL_INVALID.getMessage());
         }
